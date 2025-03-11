@@ -23,10 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QGraphicsScene* scene = new QGraphicsScene(QRect(0,0,700,600));
     ui->graphicsView->setScene(scene);
 
-    QString fileName = relativeFileName("/images/dame.jpg");
+    QString fileName = relativeFileName("/images/grille_dame.jpg");
     QImage image(fileName);
     QGraphicsPixmapItem *pixmap =  ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(image));
-    pixmap->setOffset(11,10);
+    pixmap->setOffset(0, -40);
 }
 
 MainWindow::~MainWindow()
