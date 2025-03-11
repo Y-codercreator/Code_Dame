@@ -15,9 +15,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QString static relativeFileName( QString fileName );
-
-
 private:
     Ui::MainWindow *ui;
 };
