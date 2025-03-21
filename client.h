@@ -1,11 +1,31 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <QTcpSocket>
+#include <QObject>
 
-class client
+class QTcpSocket;
+class QNetworkSession;
+
+class Client : public QObject
 {
+    Q_OBJECT
+
 public:
-    client();
+    Client();
+
+private slots:
+    void lireTexte();
+    void afficherErreur(QAbstractSocket::SocketError socketError);
+
+public slots:
+    void envoiTexte( const std::string& s);
+
+private:
+    QTcpSocket *m_tcpSocket;
+    quint16 m_blockSize;
+    QNetworkSession *m_networkSession;
 };
 
-#endif // CLIENT_H
+#endif
+
