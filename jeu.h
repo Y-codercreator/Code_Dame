@@ -21,22 +21,51 @@ typedef enum
     E_NOIR      //Joueur noir
 }t_joueur;
 
+typedef enum
+{
+    HAUT_GAUCHE,
+    HAUT_DROIT,
+    BAS_GAUCHE,
+    BAS_DROIT
+}t_direct;
+
+typedef struct //Type conteneur de coordonnées
+{
+    int x;
+    int y;
+}t_coord;
+
 typedef t_case t_grille[MAX][MAX];
 
-class jeu
+class Jeu
 {
     private:
-        t_grille grille;
-        t_joueur j_mod;
+        t_grille grille;    //Grille de jeu
+        t_joueur j_mod;     //Si je joueur jou blanc ou noir
+
+        t_coord case_select;  //Case pour laquel on veut effectuer un deplacement pour un tour
+        t_coord case_depl;  //Case sur laquel on veut aller (en cours de traitement)
+        t_direct depl_direct; //Direction du deplacement
 
     public:
-        jeu();
+        Jeu();
 
         //INITIALISATION DE LA GRILLE
         void init();
 
         //DETECTION ET MODIFICATIONS
-        void detect_dame();
+        void detect_dame();     //Detecte et modifie le pion en dame si valide
+        bool depl_valide();     //Detecte la validité d'un mouvement
+        bool detect_manger();   //Detecte la possibilité de manger un pion/dame à coté
+        bool detect_mangeable_pion();//Detecte si un pion/dame peut être mangé par un pion
+        bool detect_mangeable_dame();//Detecte si un pion/dame peut être mangé par une dame
+
+        void detect_direct();            //Defini la direction que va prendre le pion sélectionné lors du déplacement
+        void select_case(int x, int y);  //Defini quelle case vient d'être sélectionnée
+        void select_depl(int x, int y);  //Defini sur quelle case on veut aller
+
+        //CONVERSION
+        t_coord coo_to_matrice(int x, int y); // Adapte les coordonnées de pixel en case de la matrice
 
 };
 
