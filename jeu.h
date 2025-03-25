@@ -66,7 +66,7 @@ class Jeu
         void trigger_jeu();
 
         //DETECTION ET MODIFICATIONS
-        bool deplacement(int x, int y);   // effectue un déplacement
+        bool deplacement(int x_select, int y_select, int x_dpl, int y_dpl);   // effectue un déplacement
 
         void detect_dame();         //Detecte et modifie le pion en dame si valide
         t_retour depl_valide();     //Detecte la validité d'un mouvement

@@ -76,47 +76,36 @@ bool Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
         adv_pion = BLANC;
     }
 
-    if()
+    switch(depl_valide())
     {
-        switch(depl_valide())
-        {
-            case MANGER:
-                if(depl_direct == HAUT_DROIT)
-                {
-                    grille[depl_direct.y][depl_direct.x] = VIDE;
-                }
-                else if(depl_direct == HAUT_GAUCHE )
-                {
-                    grille[case_select.y][depl_direct.x] = VIDE;
-                }
-                else if(depl_direct == BAS_DROIT )
-                {
-                    grille[depl_direct.y][depl_direct.x] = VIDE;
-                }
-                else
-                {
-                    grille[case_select.y][case_select.x] = VIDE;
-                }
+        case MANGER:
+            if(depl_direct.direct == HAUT_DROIT)
+             {
+                 grille[depl_direct.y][depl_direct.x] = VIDE;
+             }
+             else if(depl_direct.direct == HAUT_GAUCHE )
+             {
+                 grille[case_select.y][depl_direct.x] = VIDE;
+             }
+             else if(depl_direct.direct == BAS_DROIT )
+             {
+                 grille[depl_direct.y][depl_direct.x] = VIDE;
+             }
+             else
+             {
+                 grille[case_select.y][case_select.x] = VIDE;
+             }
 
-                grille[case_depl.x][case_depl.y] = adv_pion;
-                grille[case_select.x][case_select.y] = VIDE;
-                break;
-            case SIMPLE:
-                grille[case_depl.x][case_depl.y] = adv_pion;
-                grille[case_select.x][case_select.y] = VIDE;
-                break;
-            default:
-                break;
-        }
-
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
-
+             grille[case_depl.x][case_depl.y] = adv_pion;
+             grille[case_select.x][case_select.y] = VIDE;
+             return true;
+         case SIMPLE:
+             grille[case_depl.x][case_depl.y] = adv_pion;
+             grille[case_select.x][case_select.y] = VIDE;
+             return true;
+         default:
+             return false;
+     }
 }
 /*
 void Jeu::detect_dame()
@@ -186,6 +175,7 @@ t_retour Jeu::depl_valide()
 bool Jeu::detect_mangeable_pion()
 {
     bool a_manger = false;
+    t_case adv_pion;
 
     if(j_mod == E_NOIR)
     {
