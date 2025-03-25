@@ -13,6 +13,7 @@ class Client : public QObject
 
 public:
     Client();
+    QString getTexte();
 
 private slots:
     void lireTexte();
@@ -25,6 +26,7 @@ private:
     QTcpSocket *m_tcpSocket;
     quint16 m_blockSize;
     QNetworkSession *m_networkSession;
+    QString m_texte;
 };
 
 #endif

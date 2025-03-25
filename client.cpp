@@ -57,13 +57,11 @@ void Client::lireTexte()
     if (m_tcpSocket->bytesAvailable() < m_blockSize)
         return;
 
-    QString texte;
-    in >> texte;
+    in >> m_texte;
 
-    std::cout << texte.toStdString() << std::endl;
+    std::cout << m_texte.toStdString() << std::endl;
     m_blockSize = 0;
 
-    //envoie et saisi pour jeux mystere
 
 }
 
@@ -102,3 +100,7 @@ void Client::envoiTexte( const std::string& s )
     m_tcpSocket->write(block);
 }
 
+QString Client::getTexte()
+{
+    return m_texte;
+}
