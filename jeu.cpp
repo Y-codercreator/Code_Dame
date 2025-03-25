@@ -11,20 +11,22 @@ Jeu::Jeu()
     }
 }
 
-void Jeu::init()
+void Jeu::init(bool aff)
 {
     for(int y = 0; y < 4; y++)
     {
-        for(int x = 0; x < MAX; x+= 2)
+        for(int x = 1; x < MAX; x+= 2)
         {
             if(y % 2 != 0 && x == 0)
             {
                 x++;
             }
 
-            grille[y][x] = NOIR;
+            grille[y][x] = BLANC;
         }
     }
+
+
 
     for(int y = 6; y < MAX; y++)
     {
@@ -38,6 +40,24 @@ void Jeu::init()
             grille[y][x] = BLANC;
         }
     }
+
+    if(aff)
+    {
+        for(int y = 0; y < MAX; y++)
+        {
+            for(int x = 0; x < MAX; x++)
+            {
+               std::cout << ' ' << grille[y][x] << ' ' ;
+            }
+
+            std::cout << std::endl;
+        }
+    }
+}
+
+void Jeu::trigger_jeu()
+{
+
 }
 
 void Jeu::detect_dame()
@@ -200,7 +220,7 @@ bool Jeu::detect_mangeable_dame()
     return a_manger;
 }
 
-void Jeu::detect_direct()
+void Jeu::set_depl_direct()
 {
     int vect_x = case_depl.x - case_select.x;
     int vect_y = case_depl.y - case_select.y;
@@ -223,12 +243,12 @@ void Jeu::detect_direct()
     }
 }
 
-void Jeu::select_case(int x, int y)
+void Jeu::set_case_select(int x, int y)
 {
     case_select = coo_to_matrice(x, y);
 }
 
-void Jeu::select_depl(int x, int y)
+void Jeu::set_case_depl(int x, int y)
 {
     case_depl = coo_to_matrice(x, y);
 }
