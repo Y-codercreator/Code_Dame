@@ -18,7 +18,6 @@
 #include <defines.h>
 
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -33,16 +32,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QGraphicsPixmapItem *pixmap1 =  ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(image));
     pixmap1->setOffset(0, -40);
 
-    QString fileName = relativeFileName("/images/pion_noir.png");
-    QImage image1(fileName);
-    QGraphicsPixmapItem *pixmap2 = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(image1));
-    pixmap2->setOffset(116 + 2 * i * ECART_CASE, 23);
-
-
     label = new QLabel(this);
     label->setAlignment(Qt::AlignCenter);
     label-> setText("coordonnées");
 
+    m_jeu.init(false);
+    dessinerPlateau();
 }
 
 MainWindow::~MainWindow()
@@ -57,6 +52,14 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     int y = event->y();
 
     label->setText(QString("%1, %2").arg(x).arg(y));
+
+    int x2, y2;
+
+    x2 = ( (x - 106) / ECART_CASE );
+    y2 = ( (y - 116) / ECART_CASE );
+    std::cout << x2 << ";" << y2 << std::endl;
+
+
 }
 
 QString MainWindow::relativeFileName( QString fileName )
@@ -64,4 +67,30 @@ QString MainWindow::relativeFileName( QString fileName )
     return QString( APPLICATION_DIR ).append(fileName);
 }
 
+void MainWindow::dessinerPlateau( )
+{
+    QString fileName = relativeFileName("/images/pion_noir.png");
+    QImage image1(fileName);
+    QString fileName2 = relativeFileName("/images/pion_blanc.png");
+    QImage image2(fileName2);
+
+    for ( int i = 0; i != 10; i++)
+    {
+        for ( int j = 0; j != 10; j++)
+        {
+            if ( m_jeu.get_case_grille(i,j) == NOIR )
+            {
+                QGraphicsPixmapItem *pixmap2 = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(image1));
+                pixmap2->setOffset(  53 + i * ECART_CASE, 23 + j * ECART_CASE);
+            }
+            if ( m_jeu.get_case_grille(i,j) == BLANC)
+            {
+                QGraphicsPixmapItem *pixmap3 = ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(image2));
+                pixmap3->setOffset(  53 + i * ECART_CASE, 23 + j * ECART_CASE);
+            }
+
+        }
+
+    }
+}
 

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QLabel>
 
+#include "jeu.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -18,12 +20,19 @@ public:
 
     QString static relativeFileName( QString fileName );
 
+    void dessinerPlateau( );
+
 protected slots:
     void mousePressEvent(QMouseEvent *event);
+
+
+private slots:
+    void on_btnForfait_clicked();
 
 private:
     Ui::MainWindow *ui;
     QLabel *label;
+    Jeu m_jeu;
 };
 
 #endif // MAINWINDOW_H
