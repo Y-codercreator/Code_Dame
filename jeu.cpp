@@ -13,32 +13,37 @@ Jeu::Jeu()
 
 void Jeu::init(bool aff)
 {
+    bool pair = false;
+
     for(int y = 0; y < 4; y++)
     {
         for(int x = 1; x < MAX; x+= 2)
         {
-            if(y % 2 != 0 && x == 0)
+            if(pair && x == 1)
             {
-                x++;
+                x = 0;
             }
 
-            grille[y][x] = BLANC;
+            grille[y][x] = NOIR;
         }
-    }
 
+        pair = !pair;
+    }
 
 
     for(int y = 6; y < MAX; y++)
     {
-        for(int x = 0; x < MAX; x+= 2)
+        for(int x = 1; x < MAX; x+= 2)
         {
-            if(y % 2 != 0 && x == 0)
+            if(pair && x == 1)
             {
-                x++;
+                x = 0;
             }
 
             grille[y][x] = BLANC;
         }
+
+        pair = !pair;
     }
 
     if(aff)
