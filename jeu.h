@@ -21,18 +21,27 @@ typedef enum
     E_NOIR      //Joueur noir
 }t_joueur;
 
-typedef enum
+typedef enum        //ENUMERATION DES DIRECTIONS POSSIBLES LORS DE DEPLACMENTS
 {
+    NONE,
     HAUT_GAUCHE,
     HAUT_DROIT,
     BAS_GAUCHE,
     BAS_DROIT
 }t_direct;
 
-typedef struct //Type conteneur de coordonnées
+typedef enum
+{
+    SIMPLE,     // deplacement simple
+    MANGER,     // deplacement pour manger (en x2)
+    INVALIDE    //deplacement impossible
+}t_retour;
+
+typedef struct //Type conteneur de coordonnées + direction
 {
     int x;
     int y;
+    t_direct direct = NONE;
 }t_coord;
 
 typedef t_case t_grille[MAX][MAX];
@@ -45,7 +54,7 @@ class Jeu
 
         t_coord case_select;  //Case pour laquel on veut effectuer un deplacement pour un tour
         t_coord case_depl;  //Case sur laquel on veut aller (en cours de traitement)
-        t_direct depl_direct; //Direction du deplacement
+        t_coord depl_direct; //Direction du deplacement
 
     public:
         Jeu();
@@ -57,9 +66,11 @@ class Jeu
         void trigger_jeu();
 
         //DETECTION ET MODIFICATIONS
-        void detect_dame();     //Detecte et modifie le pion en dame si valide
-        bool depl_valide();     //Detecte la validité d'un mouvement
-        bool detect_manger();   //Detecte la possibilité de manger un pion/dame à coté
+        bool deplacement(int x, int y);   // effectue un déplacement
+
+        void detect_dame();         //Detecte et modifie le pion en dame si valide
+        t_retour depl_valide();     //Detecte la validité d'un mouvement
+        bool detect_manger();       //Detecte la possibilité de manger un pion/dame à coté
         bool detect_mangeable_pion();//Detecte si un pion/dame peut être mangé par un pion
         bool detect_mangeable_dame();//Detecte si un pion/dame peut être mangé par une dame
 
@@ -75,7 +86,7 @@ class Jeu
         t_joueur get_j_mod() {return j_mod;}
         t_coord get_case_select() {return case_select;}
         t_coord get_case_depl() {return case_depl;}
-        t_direct get_depl_direct(){return depl_direct;}
+        t_coord get_depl_direct(){return depl_direct;}
 
         //SET
         void set_depl_direct();            //Defini la direction que va prendre le pion sélectionné lors du déplacement
