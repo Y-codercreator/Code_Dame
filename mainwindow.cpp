@@ -17,11 +17,13 @@
 
 #include <defines.h>
 
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    m_premier_click = true;
     ui->setupUi(this);
 
     QGraphicsScene* scene = new QGraphicsScene(QRect(0,0,700,600));
@@ -47,7 +49,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-
     int x = event->x();
     int y = event->y();
 
@@ -57,9 +58,25 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
     x2 = ( (x - 106) / ECART_CASE );
     y2 = ( (y - 116) / ECART_CASE );
+
     std::cout << x2 << ";" << y2 << std::endl;
 
+    if ( m_premier_click )
+    {
+        m_premier_click = false;
+        m_x2 = x2;
+        m_y2 = y2;
+    }
+    else
+    {
+        m_premier_click = true;
+        bool coup_valide = m_jeu.deplacement( m_x2, m_y2, x2, y2);
 
+        if ( coup_valide )
+            dessinerPlateau();
+        else
+            std::cout << "erreur" << std::endl;
+    }
 }
 
 QString MainWindow::relativeFileName( QString fileName )
@@ -69,8 +86,15 @@ QString MainWindow::relativeFileName( QString fileName )
 
 void MainWindow::dessinerPlateau( )
 {
-    QString fileName = relativeFileName("/images/pion_noir.png");
-    QImage image1(fileName);
+    ui->graphicsView->scene()->clear();
+
+    QString fileName = relativeFileName("/images/grille_dame.jpg");
+    QImage image(fileName);
+    QGraphicsPixmapItem *pixmap1 =  ui->graphicsView->scene()->addPixmap(QPixmap::fromImage(image));
+    pixmap1->setOffset(0, -40);
+
+    QString fileName1 = relativeFileName("/images/pion_noir.png");
+    QImage image1(fileName1);
     QString fileName2 = relativeFileName("/images/pion_blanc.png");
     QImage image2(fileName2);
 
@@ -94,3 +118,28 @@ void MainWindow::dessinerPlateau( )
     }
 }
 
+
+void MainWindow::on_btnForfait_clicked()
+{
+    //m_jeu.fin_partie();
+    QMessageBox msgBoxForfait;
+    msgBoxForfait.setText("vous avez perdus");
+    int ret = msgBoxForfait.exec();
+}
+
+void MainWindow::on_btnEgalite_clicked()
+{
+    //m_jeu.fin_partie();
+    QMessageBox msgBoxEgalite;
+    msgBoxEgalite.setText("vous êtes à égalité");
+    int ret = msgBoxEgalite.exec();
+}
+
+void MainWindow::on_btnRestart_clicked()
+{
+    QMessageBox msgBoxRestart;
+    msgBoxRestart.setText("La partie va redémarrer");
+    int ret = msgBoxRestart.exec();
+
+    dessinerPlateau();
+}
