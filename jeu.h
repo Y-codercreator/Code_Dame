@@ -65,7 +65,16 @@ class Jeu
         void select_depl(int x, int y);  //Defini sur quelle case on veut aller
 
         //CONVERSION
-        t_coord coo_to_matrice(int x, int y); // Adapte les coordonnées de pixel en case de la matrice
+        t_coord coo_to_matrice(int x, int y); // Adapte les coordonnées de pixel en coordonnées de la matrice
+
+        //GET
+        t_grille get_grille() {return grille;}
+        t_joueur get_j_mod() {return j_mod;}
+        t_coord get_case_select() {return case_select;}
+        t_coord get_case_depl() {return case_depl;}
+        t_direct get_depl_direct(){return depl_direct;}
+
+        //SET
 
 };
 
