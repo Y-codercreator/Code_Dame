@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "defines.h"
+#include "client.h"
 
 #include <QDialog>
 #include <QGraphicsScene>
@@ -15,14 +16,13 @@
 #include <QMouseEvent>
 #include <QLabel>
 
-#include <defines.h>
-
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    m_client.setApp( this );
     m_premier_click = true;
     ui->setupUi(this);
 
@@ -142,4 +142,18 @@ void MainWindow::on_btnRestart_clicked()
     int ret = msgBoxRestart.exec();
 
     dessinerPlateau();
+}
+
+void MainWindow::ecouter()
+{
+
+    if (m_client.getTexte().contains("Equipe Blanche"))
+    {
+        ui->labelEquipe->setText("EQUIPE : BLANC");
+        cout<< "Blanc"<< endl;
+    }
+
+    if (m_client.getTexte().contains("Equipe Noir"))
+        ui->labelEquipe->setText("EQUIPE : NOIR");
+
 }
