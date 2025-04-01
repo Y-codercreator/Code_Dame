@@ -125,14 +125,33 @@ void MainWindow::on_btnForfait_clicked()
     QMessageBox msgBoxForfait;
     msgBoxForfait.setText("vous avez perdus");
     int ret = msgBoxForfait.exec();
+
+    m_client.envoiTexte("forfait");
 }
 
 void MainWindow::on_btnEgalite_clicked()
 {
-    //m_jeu.fin_partie();
-    QMessageBox msgBoxEgalite;
-    msgBoxEgalite.setText("vous êtes à égalité");
-    int ret = msgBoxEgalite.exec();
+     QMessageBox msgBox;
+    msgBox.setText("L'adversaire propose un match nul");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+
+    switch (ret) {
+      case QMessageBox::Yes:
+          // Save was clicked
+          break;
+      case QMessageBox::No:
+          // Don't Save was clicked
+          break;
+      case QMessageBox::Cancel:
+          // Cancel was clicked
+          break;
+      default:
+          // should never be reached
+          break;
+    }
+
 }
 
 void MainWindow::on_btnRestart_clicked()
@@ -156,6 +175,14 @@ void MainWindow::ecouter()
     if (m_client.getTexte().contains("Equipe Noir"))
         ui->labelEquipe->setText("EQUIPE : NOIR");
 
+
+    if (m_client.getTexte().contains("forfait"))
+    {
+        QMessageBox msgBoxForfait;
+        msgBoxForfait.setText("l'adversaire declare fortfait, vous avez gagne !");
+        int ret = msgBoxForfait.exec();
+
+    }
 }
 
 void MainWindow::score()
