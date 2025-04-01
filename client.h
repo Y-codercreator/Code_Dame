@@ -6,6 +6,7 @@
 
 class QTcpSocket;
 class QNetworkSession;
+class MainWindow;
 
 class Client : public QObject
 {
@@ -14,6 +15,8 @@ class Client : public QObject
 public:
     Client();
     QString getTexte();
+
+    void setApp(MainWindow *app);
 
 private slots:
     void lireTexte();
@@ -27,6 +30,8 @@ private:
     quint16 m_blockSize;
     QNetworkSession *m_networkSession;
     QString m_texte;
+
+    MainWindow * m_app;
 };
 
 #endif
