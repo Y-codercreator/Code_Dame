@@ -157,3 +157,18 @@ void MainWindow::ecouter()
         ui->labelEquipe->setText("EQUIPE : NOIR");
 
 }
+
+void MainWindow::score()
+{
+    /*if ( coup_valide == MANGER)
+    {
+        int score = 0;
+        score = score + 1;
+    }*/
+}
+
+void MainWindow::on_labelScore_linkActivated(const QString &link)
+{
+    label->setText("score : ");
+    score();
+}
