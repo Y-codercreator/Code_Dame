@@ -34,7 +34,9 @@ typedef enum
 {
     SIMPLE,     // deplacement simple
     MANGER,     // deplacement pour manger (en x2)
-    INVALIDE    //deplacement impossible
+    INVALIDE,   //  deplacement impossible
+    NON_PION,   // la case selectionnée ne contient pas de pion
+    HORS_LIMITE // le deplacement voulu se fait hors des limites
 }t_retour;
 
 typedef struct //Type conteneur de coordonnées + direction
@@ -44,7 +46,7 @@ typedef struct //Type conteneur de coordonnées + direction
     t_direct direct = NONE;
 }t_coord;
 
-typedef t_case t_grille[MAX][MAX];
+typedef t_case t_grille[MAX][MAX]; //Grille de jeu
 
 class Jeu
 {
@@ -58,20 +60,19 @@ class Jeu
 
     public:
         Jeu();
+        Jeu(t_grille grid);
 
         //INITIALISATION DE LA GRILLE
         void init(bool aff);
 
-        //EXECUTION PRINCIPALE
-        void trigger_jeu();
-
         //DETECTION ET MODIFICATIONS
-        bool deplacement(int x_select, int y_select, int x_dpl, int y_dpl);   // effectue un déplacement
+        t_retour deplacement(int x_select, int y_select, int x_dpl, int y_dpl);   // effectue un déplacement
 
         void detect_dame();         //Detecte et modifie le pion en dame si valide
         t_retour depl_valide();     //Detecte la validité d'un mouvement
-        bool detect_manger();       //Detecte la possibilité de manger un pion/dame à coté
+        t_retour detect_manger();       //Detecte la possibilité de manger un pion/dame à coté
         bool detect_mangeable_pion();//Detecte si un pion/dame peut être mangé par un pion
+
         bool detect_mangeable_dame();//Detecte si un pion/dame peut être mangé par une dame
 
         void detect_direct();            //Defini la direction que va prendre le pion sélectionné lors du déplacement

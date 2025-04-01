@@ -11,6 +11,17 @@ Jeu::Jeu()
     }
 }
 
+Jeu::Jeu(t_grille grid)
+{
+    for(int y = 0; y < MAX; y++)
+    {
+        for(int x = 0; x < MAX; x++)
+        {
+            grille[y][x] = grid[y][x];
+        }
+    }
+}
+
 void Jeu::init(bool aff)
 {
     bool pair = false;
@@ -60,7 +71,7 @@ void Jeu::init(bool aff)
     }
 }
 
-bool Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
+t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
 {
     set_case_select(x_select, y_select);
     set_case_depl(x_dpl, y_dpl);
@@ -76,7 +87,9 @@ bool Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
         adv_pion = BLANC;
     }
 
-    switch(depl_valide())
+    t_retour ret = depl_valide();
+
+    switch(ret)
     {
         case MANGER:
             if(depl_direct.direct == HAUT_DROIT)
@@ -98,14 +111,16 @@ bool Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
 
              grille[case_depl.x][case_depl.y] = adv_pion;
              grille[case_select.x][case_select.y] = VIDE;
-             return true;
+             return ret;
          case SIMPLE:
              grille[case_depl.x][case_depl.y] = adv_pion;
              grille[case_select.x][case_select.y] = VIDE;
-             return true;
+             return ret;
          default:
-             return false;
+             return ret;
      }
+
+    return ret;
 }
 /*
 void Jeu::detect_dame()
@@ -146,9 +161,11 @@ t_retour Jeu::depl_valide()
     {
         if(grille[y_s][x_s] == NOIR || grille[y_s][x_s] == BLANC)  // On cherche a savoir s'il s'agit de pions
         {
-            if((x_dpl + 1 == x_s || x_dpl - 1 == x_s ) &&  (y_dpl + 1 == y_s || y_dpl - 1 == y_s ))
+            /*if((x_dpl + 1 == x_s || x_dpl - 1 == x_s ) &&  (y_dpl + 1 == y_s || y_dpl - 1 == y_s ))
             {
-                if(detect_mangeable_pion())
+                bool ret = detect_mangeable_pion();
+
+                if(ret)
                 {
                     return MANGER;
                 }
@@ -157,16 +174,21 @@ t_retour Jeu::depl_valide()
                     return SIMPLE;
                 }
             }
-        }
-        /*
-        else if(grille[y_s][x_s] == D_NOIRE || grille[y_s][x_s] == D_BLANC) // Ici le cas pour un dame s'agit de pions
-        {
-            if(grille[y_s][x_s] == VIDE)
+            else
             {
-                return true;
-            }
+
+            }*/
+
+            return SIMPLE;
         }
-        */
+        else
+        {
+            return NON_PION;
+        }
+    }
+    else
+    {
+        return HORS_LIMITE;
     }
 
     return INVALIDE;
@@ -201,6 +223,10 @@ bool Jeu::detect_mangeable_pion()
     else if(depl_direct.direct == BAS_GAUCHE && grille[case_select.y + 1][case_select.x + 1] == adv_pion)
     {
         a_manger = true;
+    }
+    else
+    {
+        return false;
     }
 
     return a_manger;
