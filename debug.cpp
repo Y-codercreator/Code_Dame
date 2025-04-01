@@ -17,7 +17,6 @@ Debug::Debug(t_mod mod)
 
         grid[4][8] = BLANC;
 
-        Jeu game (grid);
         this->mod = mod;
     }
 
@@ -26,47 +25,36 @@ Debug::Debug(t_mod mod)
 
 Debug::Debug(t_mod mod, int g_space)
 {
-    if(mod == CONFIG_1)
-    {
-        t_grille grid;
+    game.init();
+    // game.set_case(4, 8, BLANC );
 
-        for(int y = 0; y < MAX; y++)
-        {
-            for(int x = 0; x < MAX; x++)
-            {
-                grid[y][x] = VIDE;
-            }
-        }
-
-        grid[4][8] = BLANC;
-
-        Jeu game (grid);
         this->mod = mod;
         this->space = g_space;
-    }
 
     grid_print(space);
 }
 
 t_retour Debug::move(t_direct direct, t_coord empl)
 {
-    std::cout << "TR1" << std::endl;
+    //std::cout << "TR1" << std::endl;
     switch(direct)
     {
         case HAUT_DROIT:
-        std::cout << "TR2" << std::endl;
-            return game.deplacement(empl.x, empl.y, empl.x + 1, empl.y + 1);
-        case HAUT_GAUCHE:
-            return game.deplacement(empl.x, empl.y, empl.x - 1, empl.y + 1);
-        case BAS_DROIT:
+             std::cout << "TR2_1" << std::endl;
             return game.deplacement(empl.x, empl.y, empl.x + 1, empl.y - 1);
-        case BAS_GAUCHE:
+        case HAUT_GAUCHE:
+             std::cout << "TR2_2" << std::endl;
             return game.deplacement(empl.x, empl.y, empl.x - 1, empl.y - 1);
+        case BAS_DROIT:
+            return game.deplacement(empl.x, empl.y, empl.x + 1, empl.y + 1);
+        case BAS_GAUCHE:
+            return game.deplacement(empl.x, empl.y, empl.x - 1, empl.y + 1);
         default:
             return INVALIDE;
     }
-
+std::cout << "TR3" << std::endl;
     grid_print(space);
+    std::cout << "TR4" << std::endl;
 }
 
 void Debug::grid_print(int space)
@@ -132,9 +120,10 @@ void Debug::script()
     {
         case CONFIG_1:
             t_coord select;
-            select.x = 4;
-            select.y = 8;
+            select.x = 9;
+            select.y = 6;
             return_print(move(HAUT_DROIT, select));
+            grid_print(0);
             break;
     }
 }

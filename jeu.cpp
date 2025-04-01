@@ -87,10 +87,16 @@ t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
         adv_pion = BLANC;
     }
 
+    std::cout << x_select << ' ' << y_select << ' ' <<
+                 x_dpl << ' ' << y_dpl << ' ' << std::endl;
+
     t_retour ret = depl_valide();
+
+    std::cout << "TR3" << std::endl;
 
     switch(ret)
     {
+
         case MANGER:
             if(depl_direct.direct == HAUT_DROIT)
              {
@@ -109,12 +115,12 @@ t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
                  grille[case_select.y][case_select.x] = VIDE;
              }
 
-             grille[case_depl.x][case_depl.y] = adv_pion;
-             grille[case_select.x][case_select.y] = VIDE;
+             grille[case_depl.y][case_depl.x] = adv_pion;
+             grille[case_select.y][case_select.x] = VIDE;
              return ret;
          case SIMPLE:
-             grille[case_depl.x][case_depl.y] = adv_pion;
-             grille[case_select.x][case_select.y] = VIDE;
+             grille[case_depl.y][case_depl.x] = adv_pion;
+             grille[case_select.y][case_select.x] = VIDE;
              return ret;
          default:
              return ret;
@@ -122,6 +128,35 @@ t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
 
     return ret;
 }
+
+bool Jeu::i_grille()
+{
+
+
+    if((case_depl.x < MAX || case_depl.x > -1) && (case_depl.y < MAX || case_depl.y > -1) && (case_depl.x != case_select.x && case_depl.y != case_select.y))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Jeu::i_pion()
+{
+
+
+    if(grille[case_select.y][case_select.x] == NOIR || grille[case_select.y][case_select.x] == BLANC)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 /*
 void Jeu::detect_dame()
 {
@@ -156,10 +191,12 @@ t_retour Jeu::depl_valide()
     int y_s = case_select.y;
 
     // Raccourcissement des noms de variables
+    std::cout << case_select.y << " - " << case_select.x << std::endl;
+    std::cout << NOIR << ' ' << BLANC << ' ' << grille[case_select.y][case_select.x] << std::endl;
 
-    if((x_dpl < MAX || x_dpl > -1) && (y_dpl < MAX || y_dpl > -1) && (x_dpl != x_s && y_dpl != y_s)) // Il faut que le deplacement se fasse dans les limites valides de la grille
+    if(i_grille()) // Il faut que le deplacement se fasse dans les limites valides de la grille
     {
-        if(grille[y_s][x_s] == NOIR || grille[y_s][x_s] == BLANC)  // On cherche a savoir s'il s'agit de pions
+        if(i_pion())  // On cherche a savoir s'il s'agit de pions
         {
             /*if((x_dpl + 1 == x_s || x_dpl - 1 == x_s ) &&  (y_dpl + 1 == y_s || y_dpl - 1 == y_s ))
             {
@@ -330,12 +367,17 @@ void Jeu::set_depl_direct()
 
 void Jeu::set_case_select(int x, int y)
 {
-    case_depl.x = x;
-    case_depl.y = y;
+    case_select.x = x;
+    case_select.y = y;
 }
 
 void Jeu::set_case_depl(int x, int y)
 {
     case_depl.x = x;
     case_depl.y = y;
+}
+
+void Jeu::set_case(int x, int y, t_case c)
+{
+    grille[y][x] = c;
 }

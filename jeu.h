@@ -63,11 +63,13 @@ class Jeu
         Jeu(t_grille grid);
 
         //INITIALISATION DE LA GRILLE
-        void init(bool aff);
+        void init(bool aff = false);
 
         //DETECTION ET MODIFICATIONS
         t_retour deplacement(int x_select, int y_select, int x_dpl, int y_dpl);   // effectue un déplacement
 
+        bool i_grille();
+        bool i_pion();
         void detect_dame();         //Detecte et modifie le pion en dame si valide
         t_retour depl_valide();     //Detecte la validité d'un mouvement
         t_retour detect_manger();       //Detecte la possibilité de manger un pion/dame à coté
@@ -93,6 +95,7 @@ class Jeu
         void set_depl_direct();            //Defini la direction que va prendre le pion sélectionné lors du déplacement
         void set_case_select(int x, int y);  //Defini quelle case vient d'être sélectionnée
         void set_case_depl(int x, int y);  //Defini sur quelle case on veut aller
+        void set_case(int x, int y, t_case c);
 };
 
 #endif // JEU_H
