@@ -7,6 +7,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include "mainwindow.h"
 
 #include <QCoreApplication>
 
@@ -62,7 +63,7 @@ void Client::lireTexte()
     std::cout << m_texte.toStdString() << std::endl;
     m_blockSize = 0;
 
-
+    m_app->ecouter();
 }
 
 
@@ -98,6 +99,11 @@ void Client::envoiTexte( const std::string& s )
     out << (quint16)(block.size() - sizeof(quint16));
 
     m_tcpSocket->write(block);
+}
+
+void Client::setApp(MainWindow *app)
+{
+    m_app = app;
 }
 
 QString Client::getTexte()
