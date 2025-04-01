@@ -5,6 +5,7 @@
 #include <QLabel>
 
 #include "jeu.h"
+#include "client.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,7 @@ public:
     QString static relativeFileName( QString fileName );
 
     void dessinerPlateau( );
+    void ecouter();
 
 
 
@@ -39,6 +41,7 @@ private:
     Ui::MainWindow *ui;
     QLabel *label;
     Jeu m_jeu;
+    Client m_client;
 
     int m_x2;
     int m_y2;
