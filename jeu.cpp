@@ -245,19 +245,19 @@ bool Jeu::detect_mangeable_pion()
         adv_pion = NOIR;
     }
 
-    if(depl_direct.direct == HAUT_DROIT && grille[case_select.y - 1][case_select.x - 1] == adv_pion)
+    if(depl_direct.direct == HAUT_DROIT && grille[case_select.y - 1][case_select.x + 1] == adv_pion)
     {
         a_manger = true;
     }
-    else if(depl_direct.direct == HAUT_GAUCHE && grille[case_select.y - 1][case_select.x + 1] == adv_pion)
+    else if(depl_direct.direct == HAUT_GAUCHE && grille[case_select.y - 1][case_select.x - 1] == adv_pion)
     {
         a_manger = true;
     }
-    else if(depl_direct.direct == BAS_DROIT && grille[case_select.y + 1][case_select.x - 1] == adv_pion)
+    else if(depl_direct.direct == BAS_DROIT && grille[case_select.y + 1][case_select.x + 1] == adv_pion)
     {
         a_manger = true;
     }
-    else if(depl_direct.direct == BAS_GAUCHE && grille[case_select.y + 1][case_select.x + 1] == adv_pion)
+    else if(depl_direct.direct == BAS_GAUCHE && grille[case_select.y + 1][case_select.x - 1] == adv_pion)
     {
         a_manger = true;
     }
