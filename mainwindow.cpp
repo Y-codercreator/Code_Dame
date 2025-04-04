@@ -165,11 +165,11 @@ void MainWindow::on_btnRestart_clicked()
 
 void MainWindow::ecouter()
 {
-/*
+
     if (m_client.getTexte().contains("Equipe Blanche"))
     {
         ui->labelEquipe->setText("EQUIPE : BLANC");
-        cout<< "Blanc"<< endl;
+        std::cout<< "Blanc"<< endl;
     }
 
     if (m_client.getTexte().contains("Equipe Noir"))
@@ -181,8 +181,13 @@ void MainWindow::ecouter()
         QMessageBox msgBoxForfait;
         msgBoxForfait.setText("l'adversaire declare fortfait, vous avez gagne !");
         int ret = msgBoxForfait.exec();
+    }
 
-    }*/
+    if (m_client.getTexte().contains("Ccheck1")||m_client.getTexte().contains("Ccheck2"))
+    {
+        ui->labelCon->setText("Les deux client sont connecté vous pouvez jouer");
+    }
+
 }
 
 void MainWindow::score()
