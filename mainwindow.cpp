@@ -70,10 +70,16 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     else
     {
         m_premier_click = true;
-        t_retour coup_valide = m_jeu.deplacement( m_x2, m_y2, x2, y2);
+        t_retour coup_valide = m_jeu.deplacement( m_x2, m_y2 - 1, x2, y2 - 1);
+        Debug d {};
+
+        d.return_print(coup_valide);
 
         if ( coup_valide == SIMPLE )
+        {
             dessinerPlateau();
+            std::cout << "Matisse t'est tout bonnement le meilleur" << std::endl;
+        }
         else
             std::cout << "erreur" << std::endl;
     }
