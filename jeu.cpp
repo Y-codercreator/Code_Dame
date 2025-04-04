@@ -11,35 +11,153 @@ Jeu::Jeu()
     }
 }
 
-void Jeu::init()
+Jeu::Jeu(t_grille grid)
 {
-    for(int y = 0; y < 4; y++)
+    for(int y = 0; y < MAX; y++)
     {
-        for(int x = 0; x < MAX; x+= 2)
+        for(int x = 0; x < MAX; x++)
         {
-            if(y % 2 != 0 && x == 0)
-            {
-                x++;
-            }
-
-            grille[y][x] = NOIR;
-        }
-    }
-
-    for(int y = 6; y < MAX; y++)
-    {
-        for(int x = 0; x < MAX; x+= 2)
-        {
-            if(y % 2 != 0 && x == 0)
-            {
-                x++;
-            }
-
-            grille[y][x] = BLANC;
+            grille[y][x] = grid[y][x];
         }
     }
 }
 
+void Jeu::init(bool aff)
+{
+    bool pair = false;
+
+    for(int y = 0; y < 4; y++)
+    {
+        for(int x = 1; x < MAX; x+= 2)
+        {
+            if(pair && x == 1)
+            {
+                x = 0;
+            }
+
+            grille[y][x] = NOIR;
+        }
+
+        pair = !pair;
+    }
+
+
+    for(int y = 6; y < MAX; y++)
+    {
+        for(int x = 1; x < MAX; x+= 2)
+        {
+            if(pair && x == 1)
+            {
+                x = 0;
+            }
+
+            grille[y][x] = BLANC;
+        }
+
+        pair = !pair;
+    }
+
+    if(aff)
+    {
+        for(int y = 0; y < MAX; y++)
+        {
+            for(int x = 0; x < MAX; x++)
+            {
+               std::cout << ' ' << grille[y][x] << ' ' ;
+            }
+
+            std::cout << std::endl;
+        }
+    }
+}
+
+t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
+{
+    set_case_select(x_select, y_select);
+    set_case_depl(x_dpl, y_dpl);
+    set_depl_direct();
+    t_case adv_pion;
+
+    if(j_mod == E_NOIR)
+    {
+        adv_pion = NOIR;
+    }
+    else
+    {
+        adv_pion = BLANC;
+    }
+
+    std::cout << x_select << ' ' << y_select << ' ' <<
+                 x_dpl << ' ' << y_dpl << ' ' << std::endl;
+
+    t_retour ret = depl_valide();
+
+    std::cout << "TR3" << std::endl;
+
+    switch(ret)
+    {
+
+        case MANGER:
+            if(depl_direct.direct == HAUT_DROIT)
+             {
+                 grille[depl_direct.y][depl_direct.x] = VIDE;
+             }
+             else if(depl_direct.direct == HAUT_GAUCHE )
+             {
+                 grille[case_select.y][depl_direct.x] = VIDE;
+             }
+             else if(depl_direct.direct == BAS_DROIT )
+             {
+                 grille[depl_direct.y][depl_direct.x] = VIDE;
+             }
+             else
+             {
+                 grille[case_select.y][case_select.x] = VIDE;
+             }
+
+             grille[case_depl.y][case_depl.x] = adv_pion;
+             grille[case_select.y][case_select.x] = VIDE;
+             return ret;
+         case SIMPLE:
+             grille[case_depl.y][case_depl.x] = adv_pion;
+             grille[case_select.y][case_select.x] = VIDE;
+             return ret;
+         default:
+             return ret;
+     }
+
+    return ret;
+}
+
+bool Jeu::i_grille()
+{
+
+
+    if((case_depl.x < MAX || case_depl.x > -1) && (case_depl.y < MAX || case_depl.y > -1) && (case_depl.x != case_select.x && case_depl.y != case_select.y))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Jeu::i_pion()
+{
+
+
+    if(grille[case_select.y][case_select.x] == NOIR || grille[case_select.y][case_select.x] == BLANC)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/*
 void Jeu::detect_dame()
 {
     if(j_mod == E_NOIR)
@@ -62,9 +180,9 @@ void Jeu::detect_dame()
             }
         }
     }
-}
+}*/
 
-bool Jeu::depl_valide()
+t_retour Jeu::depl_valide()
 {
     int x_dpl = case_depl.x;
     int y_dpl = case_depl.y;
@@ -73,70 +191,100 @@ bool Jeu::depl_valide()
     int y_s = case_select.y;
 
     // Raccourcissement des noms de variables
+    std::cout << case_select.y << " - " << case_select.x << std::endl;
+    std::cout << NOIR << ' ' << BLANC << ' ' << grille[case_select.y][case_select.x] << std::endl;
 
-    if((x_dpl < MAX || x_dpl > -1) && (y_dpl < MAX || y_dpl > -1) && (x_dpl != x_s && y_dpl != y_s)) // Il faut que le deplacement se fasse dans les limites valides de la grille
+    if(i_grille()) // Il faut que le deplacement se fasse dans les limites valides de la grille
     {
-        if(grille[y_s][x_s] == NOIR || grille[y_s][x_s] == BLANC)  // On cherche a savoir s'il s'agit de pions
+        if(i_pion())  // On cherche a savoir s'il s'agit de pions
         {
-            if((x_dpl + 1 == x_s || x_dpl - 1 == x_s ) &&  (y_dpl + 1 == y_s || y_dpl - 1 == y_s ))
+            /*if((x_dpl + 1 == x_s || x_dpl - 1 == x_s ) &&  (y_dpl + 1 == y_s || y_dpl - 1 == y_s ))
             {
-                if(grille[y_s][x_s] == VIDE)
+                bool ret = detect_mangeable_pion();
+
+                if(ret)
                 {
-                    return true;
+                    return MANGER;
+                }
+                else
+                {
+                    return SIMPLE;
                 }
             }
-        }
-        else if(grille[y_s][x_s] == D_NOIRE || grille[y_s][x_s] == D_BLANC) // Ici le cas pour un dame s'agit de pions
-        {
-            if(grille[y_s][x_s] == VIDE)
+            else
             {
-                return true;
-            }
+
+            }*/
+
+            return SIMPLE;
+        }
+        else
+        {
+            return NON_PION;
         }
     }
+    else
+    {
+        return HORS_LIMITE;
+    }
 
-    return false;
+    return INVALIDE;
 }
 
 bool Jeu::detect_mangeable_pion()
 {
     bool a_manger = false;
-    int incr_x = case_select.x;
-    int incr_y = case_select.y;
-    t_case adv_pion = VIDE;
-    t_case adv_dame = VIDE;
+    t_case adv_pion;
 
     if(j_mod == E_NOIR)
     {
         adv_pion = BLANC;
-        adv_dame = D_BLANC;
     }
     else
     {
         adv_pion = NOIR;
-        adv_dame = D_NOIRE;
     }
 
-    if(grille[incr_y + 1][incr_x - 1] == adv_dame || grille[incr_y + 1][incr_x - 1] == adv_pion)
+    if(depl_direct.direct == HAUT_DROIT && grille[case_select.y - 1][case_select.x + 1] == adv_pion)
     {
         a_manger = true;
     }
-    else if(grille[incr_y + 1][incr_x + 1] == adv_dame || grille[incr_y + 1][incr_x + 1] == adv_pion)
+    else if(depl_direct.direct == HAUT_GAUCHE && grille[case_select.y - 1][case_select.x - 1] == adv_pion)
     {
         a_manger = true;
     }
-    else if(grille[incr_y - 1][incr_x - 1] == adv_dame || grille[incr_y - 1][incr_x - 1] == adv_pion)
+    else if(depl_direct.direct == BAS_DROIT && grille[case_select.y + 1][case_select.x + 1] == adv_pion)
     {
         a_manger = true;
     }
-    else if(grille[incr_y - 1][incr_x + 1] == adv_dame || grille[incr_y - 1][incr_x + 1] == adv_pion)
+    else if(depl_direct.direct == BAS_GAUCHE && grille[case_select.y + 1][case_select.x - 1] == adv_pion)
     {
         a_manger = true;
+    }
+    else
+    {
+        return false;
     }
 
     return a_manger;
 }
 
+std::string Jeu::get_string_grille()
+{
+    std::string retour;
+
+    for(int y = 0; y < MAX; y++)
+    {
+        for(int x = 0; x < MAX; x++)
+        {
+            retour += (grille[y][x]);
+        }
+    }
+
+    return retour;
+}
+
+/*
 bool Jeu::detect_mangeable_dame()
 {
     bool a_manger = false;
@@ -199,46 +347,69 @@ bool Jeu::detect_mangeable_dame()
 
     return a_manger;
 }
+*/
 
-void Jeu::detect_direct()
+void Jeu::set_depl_direct()
 {
     int vect_x = case_depl.x - case_select.x;
     int vect_y = case_depl.y - case_select.y;
 
     if(vect_x < 0 && vect_y > 0 )
     {
-        depl_direct = HAUT_GAUCHE;
+        depl_direct.direct = HAUT_GAUCHE;
+        int vect_x = case_select.x - 1;
+        int vect_y = case_select.y + 1;
     }
     else if(vect_x > 0 && vect_y > 0 )
     {
-        depl_direct = HAUT_DROIT;
+        depl_direct.direct = HAUT_DROIT;
+        int vect_x = case_select.x + 1;
+        int vect_y = case_select.y + 1;
     }
     else if(vect_x > 0 && vect_y < 0 )
     {
-        depl_direct = BAS_GAUCHE;
+        depl_direct.direct = BAS_GAUCHE;
+        int vect_x = case_select.x - 1;
+        int vect_y = case_select.y - 1;
     }
     else if(vect_x < 0 && vect_y < 0 )
     {
-        depl_direct = BAS_DROIT;
+        depl_direct.direct = BAS_DROIT;
+        int vect_x = case_select.x + 1;
+        int vect_y = case_select.y - 1;
     }
 }
 
-void Jeu::select_case(int x, int y)
+void Jeu::set_case_select(int x, int y)
 {
-    case_select = coo_to_matrice(x, y);
+    case_select.x = x;
+    case_select.y = y;
 }
 
-void Jeu::select_depl(int x, int y)
+void Jeu::set_case_depl(int x, int y)
 {
-    case_depl = coo_to_matrice(x, y);
+    case_depl.x = x;
+    case_depl.y = y;
 }
 
-t_coord Jeu::coo_to_matrice(int x, int y)
+void Jeu::set_case(int x, int y, t_case c)
 {
-    t_coord x_y;
+    grille[y][x] = c;
+}
 
-    x_y.x = x / ECART_CASE;
-    x_y.y = y / ECART_CASE;
+void Jeu::set_grille_string(std::string grille)
+{
+    auto iter = grille.begin();
+    char buffer[1] = {0};
 
-    return x_y;
+    for(int y = 0; y < MAX; y++)
+    {
+        for(int x = 0; x < MAX; x++)
+        {
+            buffer[0] = *iter;
+            this->grille[y][x] = t_case(atoi(buffer));
+
+            iter++;
+        }
+    }
 }
