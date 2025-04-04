@@ -23,6 +23,8 @@ public:
 
     void dessinerPlateau( );
     void ecouter();
+    void score();
+    void dessinerPlateauTest();
 
 
 
@@ -36,6 +38,8 @@ private slots:
     void on_btnEgalite_clicked();
 
     void on_btnRestart_clicked();
+
+    void on_btnTest_clicked();
 
 private:
     Ui::MainWindow *ui;
