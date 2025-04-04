@@ -11,6 +11,7 @@ typedef enum
 class Debug
 {
     public:
+        Debug ();
         Debug(t_mod mod);
         Debug(t_mod mod, int g_space);
 

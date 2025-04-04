@@ -1,6 +1,8 @@
 #include "debug.h"
 #include "iostream"
 
+Debug::Debug() {}
+
 Debug::Debug(t_mod mod)
 {
     if(mod == CONFIG_1)
