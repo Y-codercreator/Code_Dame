@@ -184,12 +184,6 @@ void Jeu::detect_dame()
 
 t_retour Jeu::depl_valide()
 {
-    int x_dpl = case_depl.x;
-    int y_dpl = case_depl.y;
-
-    int x_s = case_select.x;
-    int y_s = case_select.y;
-
     // Raccourcissement des noms de variables
     std::cout << case_select.y << " - " << case_select.x << std::endl;
     std::cout << NOIR << ' ' << BLANC << ' ' << grille[case_select.y][case_select.x] << std::endl;
@@ -357,26 +351,26 @@ void Jeu::set_depl_direct()
     if(vect_x < 0 && vect_y > 0 )
     {
         depl_direct.direct = HAUT_GAUCHE;
-        int vect_x = case_select.x - 1;
-        int vect_y = case_select.y + 1;
+        depl_direct.x = case_select.x - 1;
+        depl_direct.y = case_select.y - 1;
     }
     else if(vect_x > 0 && vect_y > 0 )
     {
         depl_direct.direct = HAUT_DROIT;
-        int vect_x = case_select.x + 1;
-        int vect_y = case_select.y + 1;
+        depl_direct.x = case_select.x + 1;
+        depl_direct.y = case_select.y - 1;
     }
     else if(vect_x > 0 && vect_y < 0 )
     {
         depl_direct.direct = BAS_GAUCHE;
-        int vect_x = case_select.x - 1;
-        int vect_y = case_select.y - 1;
+        depl_direct.x = case_select.x - 1;
+        depl_direct.y = case_select.y + 1;
     }
     else if(vect_x < 0 && vect_y < 0 )
     {
         depl_direct.direct = BAS_DROIT;
-        int vect_x = case_select.x + 1;
-        int vect_y = case_select.y - 1;
+        depl_direct.x = case_select.x + 1;
+        depl_direct.y = case_select.y + 1;
     }
 }
 
