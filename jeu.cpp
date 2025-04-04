@@ -73,8 +73,8 @@ void Jeu::init(bool aff)
 
 t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
 {
-    set_case_select(x_select, y_select);
-    set_case_depl(x_dpl, y_dpl);
+    set_case_select(x_select , y_select );
+    set_case_depl(x_dpl, y_dpl );
     set_depl_direct();
     t_case adv_pion;
 
@@ -87,12 +87,11 @@ t_retour Jeu::deplacement(int x_select, int y_select, int x_dpl, int y_dpl)
         adv_pion = BLANC;
     }
 
-    std::cout << x_select << ' ' << y_select << ' ' <<
-                 x_dpl << ' ' << y_dpl << ' ' << std::endl;
-
     t_retour ret = depl_valide();
 
-    std::cout << "TR3" << std::endl;
+    std::cout << "CASE SELECTIONNE x:" << x_select << " y:" << y_select << std::endl;
+    std::cout << "CASE DE DEPLACEMENT x:" << x_dpl << " y:" << y_dpl << std::endl;
+
 
     switch(ret)
     {
@@ -185,8 +184,6 @@ void Jeu::detect_dame()
 t_retour Jeu::depl_valide()
 {
     // Raccourcissement des noms de variables
-    std::cout << case_select.y << " - " << case_select.x << std::endl;
-    std::cout << NOIR << ' ' << BLANC << ' ' << grille[case_select.y][case_select.x] << std::endl;
 
     if(i_grille()) // Il faut que le deplacement se fasse dans les limites valides de la grille
     {
