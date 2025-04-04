@@ -6,6 +6,6 @@
 #define APPLICATION_DIR "../Code_Dame-main/"
 
 #define MAX 10
-#define ECART_CASE 58
+#define ECART_CASE 60
 
 #endif // DEFINES_H
