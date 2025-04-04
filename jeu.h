@@ -37,7 +37,8 @@ typedef enum
     MANGER,     // deplacement pour manger (en x2)
     INVALIDE,   //  deplacement impossible
     NON_PION,   // la case selectionnée ne contient pas de pion
-    HORS_LIMITE // le deplacement voulu se fait hors des limites
+    HORS_LIMITE, // le deplacement voulu se fait hors des limites
+    EQUIPE_INVALIDE //le pion séléctionné n'appartient pas à la bonne équipe
 }t_retour;
 
 typedef struct //Type conteneur de coordonnées + direction
@@ -71,6 +72,7 @@ class Jeu
 
         bool i_grille();
         bool i_pion();
+        bool i_equipe();
         void detect_dame();         //Detecte et modifie le pion en dame si valide
         t_retour depl_valide();     //Detecte la validité d'un mouvement
         t_retour detect_manger();       //Detecte la possibilité de manger un pion/dame à coté
@@ -98,7 +100,10 @@ class Jeu
         void set_case_select(int x, int y);  //Defini quelle case vient d'être sélectionnée
         void set_case_depl(int x, int y);  //Defini sur quelle case on veut aller
         void set_case(int x, int y, t_case c);
+        void set_equipe(t_joueur j);
         void set_grille_string(std::string grille);
+
+        //VERIFICATION
 };
 
 #endif // JEU_H

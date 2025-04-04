@@ -1,4 +1,5 @@
 #include "jeu.h"
+#include <mainwindow.h>
 
 Jeu::Jeu()
 {
@@ -25,6 +26,14 @@ Jeu::Jeu(t_grille grid)
 void Jeu::init(bool aff)
 {
     bool pair = false;
+
+    for(int y = 0; y < MAX; y++)
+    {
+        for(int x = 0; x < MAX; x++)
+        {
+            grille[y][x] = VIDE;
+        }
+    }
 
     for(int y = 0; y < 4; y++)
     {
@@ -156,6 +165,20 @@ bool Jeu::i_pion()
     }
 }
 
+bool Jeu::i_equipe()
+{
+    if( grille[case_select.y][case_select.x] == NOIR && j_mod == E_NOIR )
+    {
+        return true;
+    }
+    else if ( grille[case_select.y][case_select.x] == BLANC && j_mod == E_BLANC)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
 /*
 void Jeu::detect_dame()
 {
@@ -189,6 +212,14 @@ t_retour Jeu::depl_valide()
     {
         if(i_pion())  // On cherche a savoir s'il s'agit de pions
         {
+            if ( i_equipe())
+            {
+                return SIMPLE;
+            }
+            else
+            {
+                return EQUIPE_INVALIDE;
+            }
             /*if((x_dpl + 1 == x_s || x_dpl - 1 == x_s ) &&  (y_dpl + 1 == y_s || y_dpl - 1 == y_s ))
             {
                 bool ret = detect_mangeable_pion();
@@ -207,7 +238,7 @@ t_retour Jeu::depl_valide()
 
             }*/
 
-            return SIMPLE;
+
         }
         else
         {
@@ -386,6 +417,11 @@ void Jeu::set_case_depl(int x, int y)
 void Jeu::set_case(int x, int y, t_case c)
 {
     grille[y][x] = c;
+}
+
+void Jeu::set_equipe(t_joueur j)
+{
+    j_mod = j;
 }
 
 void Jeu::set_grille_string(std::string grille)

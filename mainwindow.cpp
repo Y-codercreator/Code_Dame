@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "defines.h"
 #include "client.h"
-#include "debug.h"
 
 #include <QDialog>
 #include <QGraphicsScene>
@@ -18,6 +17,7 @@
 #include <QLabel>
 
 #include <QMessageBox>
+#include <debug.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -167,6 +167,7 @@ void MainWindow::on_btnRestart_clicked()
     msgBoxRestart.setText("La partie va redémarrer");
     int ret = msgBoxRestart.exec();
 
+    m_jeu.init(false);
     dessinerPlateau();
 }
 
@@ -177,11 +178,15 @@ void MainWindow::ecouter()
     {
         ui->labelEquipe->setText("EQUIPE : BLANC");
         std::cout<< "Blanc"<< endl;
+        m_jeu.set_equipe(E_BLANC);
     }
 
     if (m_client.getTexte().contains("Equipe Noir"))
+    {
         ui->labelEquipe->setText("EQUIPE : NOIR");
+        m_jeu.set_equipe(E_NOIR);
 
+    }
 
     if (m_client.getTexte().contains("forfait"))
     {
