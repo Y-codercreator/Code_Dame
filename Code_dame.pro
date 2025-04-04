@@ -29,13 +29,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     jeu.cpp \
-    client.cpp
+    client.cpp \
+    debug.cpp
 
 HEADERS += \
         mainwindow.h \
     defines.h \
     jeu.h \
-    client.h
+    client.h \
+    debug.h
 
 FORMS += \
         mainwindow.ui
