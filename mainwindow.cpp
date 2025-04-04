@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "defines.h"
 #include "client.h"
+#include "debug.h"
 
 #include <QDialog>
 #include <QGraphicsScene>
