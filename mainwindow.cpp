@@ -79,7 +79,10 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         if ( coup_valide == SIMPLE )
         {
             dessinerPlateau();
-            std::cout << "Matisse t'est tout bonnement le meilleur" << std::endl;
+            std::cout << "111111111111111111111111111111111111111" << std::endl;
+
+            m_client.envoiTexte(m_jeu.get_string_grille()); //envoie la grille au serveur
+
         }
         else
             std::cout << "erreur" << std::endl;
@@ -173,17 +176,19 @@ void MainWindow::on_btnRestart_clicked()
 
 void MainWindow::ecouter()
 {
+    std::cout << "|" << m_client.getTexte().toStdString() << "|" << std::endl;
 
     if (m_client.getTexte().contains("Equipe Blanche"))
     {
         ui->labelEquipe->setText("EQUIPE : BLANC");
-        std::cout<< "Blanc"<< endl;
+        std::cout<< "Blanc"<< std::endl;
         m_jeu.set_equipe(E_BLANC);
     }
 
     if (m_client.getTexte().contains("Equipe Noir"))
     {
         ui->labelEquipe->setText("EQUIPE : NOIR");
+        std::cout<< "Noir"<< std::endl;
         m_jeu.set_equipe(E_NOIR);
 
     }
@@ -198,9 +203,20 @@ void MainWindow::ecouter()
     if (m_client.getTexte().contains("Ccheck1")||m_client.getTexte().contains("Ccheck2"))
     {
         ui->labelCon->setText("Les deux client sont connecté vous pouvez jouer");
+        m_client.envoiTexte("recu");
     }
 
+    if (m_client.getTexte().contains("Grille"))
+    {
+        std::cout<<"marche"<< std::endl;
+
+        m_jeu.set_grille_string(m_client.getTexte().toStdString());
+
+        dessinerPlateau();
+
+    }
 }
+
 
 void MainWindow::score()
 {/*

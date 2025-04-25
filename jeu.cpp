@@ -299,10 +299,11 @@ std::string Jeu::get_string_grille()
     {
         for(int x = 0; x < MAX; x++)
         {
-            retour += (grille[y][x]);
+            retour += std::to_string(grille[y][x]);
         }
     }
 
+    retour += "Grille";
     return retour;
 }
 
@@ -426,6 +427,10 @@ void Jeu::set_equipe(t_joueur j)
 
 void Jeu::set_grille_string(std::string grille)
 {
+    for(int i = 0; i < 6; i++ )
+    {
+        grille.pop_back();
+    }
     auto iter = grille.begin();
     char buffer[1] = {0};
 
